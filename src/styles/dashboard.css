@@ -1,0 +1,13 @@
+.dashboard-computed-data {
+	display: flex;
+	flex-direction: column;
+  }
+  .computed-data-info {
+	padding: 0 20px 0 20px;
+  }
+  
+  @media screen and (min-width: 425px) { 
+	.dashboard-computed-data {
+	  flex-direction: row;
+	}
+  }

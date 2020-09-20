@@ -1,0 +1,183 @@
+/* COLORS */
+:root {
+  --main-light-text-color: #f1f1f1;
+  --main-blue-color: #034b88;
+  --main-blue-transparent-color: rgb(3, 75, 136, 0.5);
+  --main-emerald-color: #2e72cc;
+  --main-orange-color: #b07431;
+  --main-dark-color: #0f1717;
+}
+.main-dark-text-color {
+  color: var(--main-dark-color);
+}
+.main-light-text-color {
+  color: var(--main-light-text-color);
+}
+.main-blue-transparent-color {
+  color: var(--main-blue-transparent-color);
+}
+.main-orange-color {
+  color: var(--main-orange-color);
+}
+
+/* ELEMENTS */
+a {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--main-orange-color);
+}
+body {
+  background-image: url('../images/background.jpeg');
+  background-size: cover;
+  background-attachment: fixed;
+  color: var(--main-light-text-color);
+  font-family: sans-serif;
+}
+button {
+  all: unset;
+  color: var(--main-light-text-color);
+  font-size: 16px;
+}
+button:hover {
+  cursor: pointer;
+  color: var(--main-orange-color);
+}
+form {
+  font-size: 1.2rem;
+  padding: 0 1rem;
+  text-align: left;
+}
+form label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.2rem;
+}
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+input {
+  border: none;
+  border-bottom: 1px solid rgb(212, 208, 208);
+  box-shadow: 1px 1px grey;
+  font-size: 1.2rem;
+  padding: 0.5rem 0.4rem;
+  width: 95%;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  background-color: var(--main-blue-color) !important;
+  background-image: none !important;
+  color: rgb(0, 0, 0) !important;
+}
+input:-webkit-visited,
+textarea:-webkit-visited,
+select:-webkit-visited {
+  background-color: var(--main-blue-color) !important;
+  background-image: none !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+section {
+  text-align: center
+}
+select {
+  display: block;
+  font-size: 1.2rem;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+  text-align: center;
+  /* width: 95%; */
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* CLASSES */
+.button {
+  background: rgb(221, 221, 221);
+  border: none;
+  border-radius: 1px;
+  color: var(--main-dark-color);
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin: 1rem auto;
+}
+.inlineBlock {
+  display: inline-block;
+}
+.form-input {
+  margin-bottom: 1rem;
+}
+.fullHeight {
+  height: 100%;
+}
+.main-blue-transparent-bg {
+  background-color: var(--main-blue-transparent-color);
+  border-radius: 5px;
+  padding: 1rem;
+}
+.onboarding-page {
+  margin: 0 0.5rem;
+}
+.delete-button {
+  background: white;
+  border-radius: 2px;
+  color: black;
+  display: inline-block;
+  margin: 0.2rem 1rem;
+  padding: 0.1rem 0.3rem;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+}
+.delete-button:hover {
+  background: var(--main-blue-color);
+  /* color: red; */
+}
+.delete-button:active {
+  background: red;
+  color: black;
+}
+.position-relative {
+  position: relative;
+}
+
+@media screen and (min-width: 625px) {
+  main {
+    margin: 20px;
+  }
+  form {
+    margin: 0 auto;
+    width: 500px;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  main {
+    margin: 20px auto;
+    width: 800px;
+  }
+}

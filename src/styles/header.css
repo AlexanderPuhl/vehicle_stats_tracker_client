@@ -1,0 +1,49 @@
+header {
+  background-color: var(--main-blue-transparent-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 20px 0;
+  text-align: center;
+}
+
+header h1 {
+  align-self: center;
+  margin: 0;
+}
+
+.logo {
+  align-self: center;
+  height: 35px;
+  margin: 0 10px 15px 10px;
+  width: 35px;
+}
+
+.barsIcon {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.fa-bars {
+  font-size: 32px;
+}
+.profile-nav-ul {
+  background-color: var(--main-blue-transparent-color);
+  border-radius: 5px;
+  padding: 8px;
+  position: absolute;
+  right: 20px;
+  top: 130px;
+}
+@media screen and (min-width: 625px) {
+  header {
+    flex-direction: row;
+  }
+  .logo {
+    margin-bottom: 0px;
+  }
+  .profile-nav-ul {
+    top: 80px;
+  }
+}

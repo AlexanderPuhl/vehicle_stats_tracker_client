@@ -1,0 +1,13 @@
+.vehicle-selection-form {
+  display: flex;
+  justify-content: center;
+}
+
+.vehicle-selection-form select {
+  margin: 0;
+}
+
+.vehicle-selection-form button {
+  margin: 0;
+  padding: 0 10px;
+}
