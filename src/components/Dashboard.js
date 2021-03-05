@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import requiresLogin from './RequiresLogin';
 import { fetchFuelPurchaseData, fetchVehicleData } from '../actions';
 import VehicleSelectionForm from './VehicleSelectionForm';
+import { calculateMPG, calculateMilesPerDollar, calculateCostPerMile } from '../utilities/fuelPurchaseUtilities';
 import '../styles/dashboard.css';
 
 class Dashboard extends Component {
@@ -15,26 +16,16 @@ class Dashboard extends Component {
 
 	render() {
 		// If we are logged in redirect straight to the user's dashboard
-		if (this.props.onBoarding === 'true') {
+		if (this.props.onboarding === 'true') {
 			return <Redirect to='/onboarding' />;
 		}
 
-		const firstTwoFuelPurchases = this.props.filteredFuelPurchases.slice(0, 2);
-		const milesOfFirst2 = firstTwoFuelPurchases.map(fuelPurchase => fuelPurchase.miles);
-		const differenceOfMiles = milesOfFirst2[0] - milesOfFirst2[1];
-		const amountOfFirst2 = firstTwoFuelPurchases.map(fuelPurchase => fuelPurchase.amount);
-		const costOfFirst2 = firstTwoFuelPurchases.map(
-			fuelPurchase => fuelPurchase.price * fuelPurchase.amount,
-		);
-		let calculatedMPG, calculateMilerPerDollar, costPerMiles;
-		calculatedMPG = calculateMilerPerDollar = costPerMiles = 'Needs more data';
-		if (differenceOfMiles && amountOfFirst2[1]) {
-			calculatedMPG = (differenceOfMiles / amountOfFirst2[0]).toFixed(2);
-			calculateMilerPerDollar = (differenceOfMiles / costOfFirst2[0]).toFixed(
-				2,
-			);
-			costPerMiles = '$' + (costOfFirst2[0] / differenceOfMiles).toFixed(2);
-		}
+		const lastTwoFuelPurchases = this.props.selectedVehicleFuelPurchases.slice(0, 2);
+
+		let calculatedMPG = calculateMPG(lastTwoFuelPurchases);
+		let calculatedMilesPerDollar = calculateMilesPerDollar(lastTwoFuelPurchases);
+		let calculatedCostPerMile = calculateCostPerMile(lastTwoFuelPurchases);
+
 		let needDataMessage;
 		if (calculatedMPG === 'Needs more data') {
 			needDataMessage = (
@@ -56,12 +47,12 @@ class Dashboard extends Component {
 					<div className='computed-data-info'>
 						<h3>Miles per dollar</h3>
 						<i className='fas fa-dollar-sign' />
-						<p>{calculateMilerPerDollar}</p>
+						<p>{calculatedMilesPerDollar}</p>
 					</div>
 					<div className='computed-data-info'>
 						<h3>Cost per Mile</h3>
 						<i className='fas fa-road' />
-						<p>{costPerMiles}</p>
+						<p>{calculatedCostPerMile}</p>
 					</div>
 					{needDataMessage}
 				</div>
@@ -88,9 +79,7 @@ const mapStateToProps = state => {
 
 	let selectedVehicle = '';
 	vehicles.forEach(vehicle => {
-		console.log(vehicle);
-		console.log(user);
-		if (vehicle.vehicle_id === user.selectedVehicle) {
+		if (vehicle.vehicle_id === user.selected_vehicle_id) {
 			selectedVehicle = vehicle;
 		}
 	});
@@ -99,15 +88,15 @@ const mapStateToProps = state => {
 		return fuelPurchase.vehicle_id === selectedVehicle.vehicle_id;
 	}
 
-	let filteredFuelPurchases = [];
-	filteredFuelPurchases = fuelPurchases.filter(filterFuelPurchases);
+	let selectedVehicleFuelPurchases = [];
+	selectedVehicleFuelPurchases = fuelPurchases.filter(filterFuelPurchases);
 
 	return {
-		onBoarding: `${user.onboarding}`,
+		onboarding: user.onboarding,
 		fuelPurchaseData: state.fuelPurchaseReducer.data,
 		vehicleName: selectedVehicle.vehicle_name,
 		oilChangeFrequency: selectedVehicle.oil_change_frequency,
-		filteredFuelPurchases: filteredFuelPurchases,
+		selectedVehicleFuelPurchases: selectedVehicleFuelPurchases,
 	};
 };
 

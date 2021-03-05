@@ -25,11 +25,11 @@ class Vehicles extends Component {
 			<li className='main-blue-transparent-bg position-relative' key={index}>
 				<p>
 					<b>Vehicle Name: </b>
-					{vehicle.vehicleName}
+					{vehicle.vehicle_name}
 				</p>
 				<p>
 					<b>Oil Change Frequency: </b>
-					{vehicle.oilChangeFrequency}
+					{vehicle.oil_change_frequency}
 				</p>
 				<p>
 					<b>Vehicle added on: </b>
@@ -71,14 +71,14 @@ const mapStateToProps = state => {
 	const { vehicles } = state.vehicleReducer;
 	let selectedVehicle = '';
 	vehicles.forEach(vehicle => {
-		if (vehicle.id === user.selectedVehicle) {
+		if (vehicle.vehicle_id === user.selected_vehicle_id) {
 			selectedVehicle = vehicle;
 		}
 	});
 	return {
 		vehicles: vehicles,
-		currentVehicleName: selectedVehicle.vehicleName,
-		currentVehicleOilChangeFrequency: selectedVehicle.oilChangeFrequency,
+		currentVehicleName: selectedVehicle.vehicle_name,
+		currentVehicleOilChangeFrequency: selectedVehicle.oil_change_frequency,
 	};
 };
 

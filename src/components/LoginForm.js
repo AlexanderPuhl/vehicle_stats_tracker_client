@@ -51,7 +51,7 @@ export class LoginForm extends Component {
 						disabled={this.props.pristine || this.props.submitting}
 					>
 						Login
-          </button>
+					</button>
 				</form>
 				<p>Or click the button below to log into a demo account.</p>
 				<button
@@ -59,7 +59,7 @@ export class LoginForm extends Component {
 					onClick={() => this.demoLogin('demo', 'thinkful123')}
 				>
 					Demo Account
-        </button>
+					</button>
 			</>
 		);
 	}

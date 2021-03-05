@@ -79,7 +79,7 @@ const mapStateToProps = state => {
 	const { user } = state.authReducer;
 	return {
 		id: `${user.id}`,
-		onBoarding: user.onboarding,
+		onboarding: user.onboarding,
 	};
 };
 

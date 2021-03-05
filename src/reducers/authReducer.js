@@ -28,7 +28,7 @@ export default (state = INITIAL_STATE, action) => {
 		case AUTH_REQUEST:
 			return { ...state, loading: true, error: null };
 		case AUTH_SUCCESS:
-			return { ...state, loading: false, user: action };
+			return { ...state, loading: false, user: action.user };
 		case AUTH_ERROR:
 			return { ...state, loading: false, error: action.error };
 		case ONBOARDING_SUCCESS:

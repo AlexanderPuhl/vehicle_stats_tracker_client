@@ -25,7 +25,7 @@ export class FuelPurchaseHistory extends Component {
 	}
 
 	render() {
-		const fuelPurchaseDataList = this.props.filteredFuelPurchases.map(
+		const fuelPurchaseDataList = this.props.selectedVehicleFuelPurchases.map(
 			(fuelPurchase, index) => (
 				<li
 					className='block main-blue-transparent-bg position-relative'
@@ -33,7 +33,7 @@ export class FuelPurchaseHistory extends Component {
 				>
 					<p>
 						<b>Current Mileage: </b>
-						{fuelPurchase.miles}
+						{fuelPurchase.odometer}
 					</p>
 					<p>
 						<b>Price per Gallon:</b> ${fuelPurchase.price}
@@ -47,7 +47,7 @@ export class FuelPurchaseHistory extends Component {
 					</p>
 					<button
 						className='delete-button'
-						onClick={() => this.deleteFuelPurchases(fuelPurchase.id)}
+						onClick={() => this.deleteFuelPurchases(fuelPurchase.fuel_purchase_id)}
 					>
 						X
           </button>
@@ -84,22 +84,22 @@ const mapStateToProps = state => {
 
 	let selectedVehicle = '';
 	vehicles.forEach(vehicle => {
-		if (vehicle.id === user.selectedVehicle) {
+		if (vehicle.vehicle_id === user.selected_vehicle_id) {
 			selectedVehicle = vehicle;
 		}
 	});
 
 	function filterFuelPurchases(fuelPurchase) {
-		return fuelPurchase.vehicleId === selectedVehicle.id;
+		return fuelPurchase.vehicle_id === selectedVehicle.vehicle_id;
 	}
 
-	let filteredFuelPurchases = [];
-	filteredFuelPurchases = fuelPurchases.filter(filterFuelPurchases);
+	let selectedVehicleFuelPurchases = [];
+	selectedVehicleFuelPurchases = fuelPurchases.filter(filterFuelPurchases);
 
 	return {
 		vehicleName: selectedVehicle.vehicle_name,
 		oilChangeFrequency: selectedVehicle.oil_change_frequency,
-		filteredFuelPurchases: filteredFuelPurchases,
+		selectedVehicleFuelPurchases: selectedVehicleFuelPurchases,
 	};
 };
 

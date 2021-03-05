@@ -30,15 +30,17 @@ export class LogFuelPage extends Component {
 const mapStateToProps = state => {
 	const { user } = state.authReducer;
 	const { vehicles } = state.vehicleReducer;
-	let selectedVehicleName = '';
+
+	let selectedVehicle = '';
 	vehicles.forEach(vehicle => {
-		if (vehicle.id === user.selectedVehicle) {
-			selectedVehicleName = vehicle.vehicleName;
+		if (vehicle.vehicle_id === user.selected_vehicle_id) {
+			selectedVehicle = vehicle;
 		}
 	});
+
 	return {
 		name: `${user.name}`,
-		vehicleName: selectedVehicleName,
+		vehicleName: selectedVehicle.vehicle_name,
 	};
 };
 
