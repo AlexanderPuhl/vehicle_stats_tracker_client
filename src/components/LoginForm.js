@@ -1,71 +1,70 @@
-import React, { Component } from 'react';
-import { Field, reduxForm, focus } from 'redux-form';
-import Input from './Input';
-import { login } from '../actions';
-import { required, nonEmpty } from '../validators';
+import React from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
+import useAuthentication from '../hooks/useAuthentication';
+import { useAuthenticated } from '../context/authContext';
+import useForm from '../hooks/useForm';
 import '../styles/landing-page.css';
 
-export class LoginForm extends Component {
-	onSubmit(values) {
-		return this.props.dispatch(login(values.username, values.password));
-	}
+function LoginForm() {
+  const { setAuthenticated, setUser } = useAuthenticated();
+  const history = useHistory();
+  const { values, updateValue } = useForm({
+    username: 'demo',
+    password: 'thinkful123',
+  });
 
-	demoLogin(username, password) {
-		return this.props.dispatch(login(username, password));
-	}
+  const { error, loading, submitLogin } = useAuthentication({
+    values,
+  });
 
-	render() {
-		let error;
-		if (this.props.error) {
-			error = (
-				<div className='form-error' aria-live='polite'>
-					{this.props.error}
-				</div>
-			);
-		}
-		return (
-			<>
-				<form
-					className='login-form'
-					onSubmit={this.props.handleSubmit(values => this.onSubmit(values))}
-				>
-					{error}
-					<label htmlFor='username'>Username:</label>
-					<Field
-						component={Input}
-						type='text'
-						name='username'
-						id='username'
-						validate={[required, nonEmpty]}
-					/>
-					<label htmlFor='password'>Password:</label>
-					<Field
-						component={Input}
-						type='password'
-						name='password'
-						id='password'
-						validate={[required, nonEmpty]}
-					/>
-					<button
-						className='button'
-						disabled={this.props.pristine || this.props.submitting}
-					>
-						Login
-					</button>
-				</form>
-				<p>Or click the button below to log into a demo account.</p>
-				<button
-					className='button'
-					onClick={() => this.demoLogin('demo', 'thinkful123')}
-				>
-					Demo Account
-					</button>
-			</>
-		);
-	}
+  async function handleClick(e) {
+    e.preventDefault();
+    const decodedToken = await submitLogin(values);
+    if (decodedToken) {
+      setAuthenticated(true);
+      setUser(decodedToken);
+      history.push('/dashboard');
+    }
+  }
+
+  return (
+    <>
+      <form onSubmit={handleClick}>
+        <fieldset>
+          <label htmlFor='username'>
+            Username:
+            <input
+              type='text'
+              name='username'
+              id='username'
+              value={values.username}
+              onChange={updateValue}
+              required
+            />
+          </label>
+          <label htmlFor='password'>
+            password:
+            <input
+              type='password'
+              name='password'
+              id='password'
+              value={values.password}
+              onChange={updateValue}
+              required
+            />
+          </label>
+          {error && (
+            <div>
+              <p>Error: {error}</p>
+            </div>
+          )}
+          <button type='submit' disabled={loading}>
+            {loading ? 'Loading' : 'Login'}
+          </button>
+        </fieldset>
+      </form>
+    </>
+  );
 }
 
-export default reduxForm({
-	form: 'login',
-	onSubmitFail: (errors, dispatch) => dispatch(focus('login', 'username')),
-})(LoginForm);
+export default withRouter(LoginForm);

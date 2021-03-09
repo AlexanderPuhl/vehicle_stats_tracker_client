@@ -1,71 +1,78 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Route, withRouter } from 'react-router-dom';
-import { refreshAuthToken } from '../actions';
-import HeaderBar from './Header';
-import LandingPage from './LandingPage';
-import Dashboard from './Dashboard';
-import Onboarding from './OnboardingPage';
-import Profile from './ProfilePage';
-import Vehicles from './VehiclePage';
-import AddVehicle from './AddVehiclePage';
-import LogFuelPage from './LogFuelPage';
-import RegistrationPage from './RegistrationPage';
-import FuelPurchaseHistory from './FuelPurchaseHistory';
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import AuthenticateRoute from './AuthenticateRoute';
+import Header from './Header';
+import LandingPage from '../pages/Landing';
+import DashboardPage from '../pages/Dashboard';
+import { useAuthenticated } from '../context/authContext';
 
-class App extends Component {
-	componentDidUpdate(prevProps) {
-		if (!prevProps.loggedIn && this.props.loggedIn) {
-			// When we are logged in, refresh the auth token periodically
-			this.startPeriodicRefresh();
-		} else if (prevProps.loggedIn && !this.props.loggedIn) {
-			// Stop refreshing when we log out
-			this.stopPeriodicRefresh();
-		}
-	}
+// import HeaderBar from './Header';
+// import LandingPage from './LandingPage';
+// import Dashboard from './Dashboard';
+// import Onboarding from './OnboardingPage';
+// import Profile from './ProfilePage';
+// import Vehicles from './VehiclePage';
+// import AddVehicle from './AddVehiclePage';
+// import LogFuelPage from './LogFuelPage';
+// import RegistrationPage from './RegistrationPage';
+// import FuelPurchaseHistory from './FuelPurchaseHistory';
 
-	componentWillUnmount() {
-		this.stopPeriodicRefresh();
-	}
+function App() {
+  const { isAuthenticated } = useAuthenticated();
+  const authedRedirect = (Component) => {
+    return isAuthenticated ? <Redirect to='/dashboard' /> : <Component />;
+  };
+  // componentDidUpdate(prevProps) {
+  // 	if (!prevProps.loggedIn && this.props.loggedIn) {
+  // 		// When we are logged in, refresh the auth token periodically
+  // 		this.startPeriodicRefresh();
+  // 	} else if (prevProps.loggedIn && !this.props.loggedIn) {
+  // 		// Stop refreshing when we log out
+  // 		this.stopPeriodicRefresh();
+  // 	}
+  // }
 
-	startPeriodicRefresh() {
-		this.refreshInterval = setInterval(
-			() => this.props.dispatch(refreshAuthToken()),
-			60 * 60 * 1000, // One hour
-		);
-	}
+  // componentWillUnmount() {
+  // 	this.stopPeriodicRefresh();
+  // }
 
-	stopPeriodicRefresh() {
-		if (!this.refreshInterval) {
-			return;
-		}
+  // startPeriodicRefresh() {
+  // 	this.refreshInterval = setInterval(
+  // 		() => this.props.dispatch(refreshAuthToken()),
+  // 		60 * 60 * 1000, // One hour
+  // 	);
+  // }
 
-		clearInterval(this.refreshInterval);
-	}
+  // stopPeriodicRefresh() {
+  // 	if (!this.refreshInterval) {
+  // 		return;
+  // 	}
 
-	render() {
-		return (
-			<>
-				<HeaderBar />
-				<main>
-					<Route exact path='/' component={LandingPage} />
-					<Route path='/dashboard' component={Dashboard} />
-					<Route path='/onboarding' component={Onboarding} />
-					<Route path='/profile' component={Profile} />
-					<Route path='/vehicles' component={Vehicles} />
-					<Route path='/addVehicle' component={AddVehicle} />
-					<Route path='/logFuelPage' component={LogFuelPage} />
-					<Route path='/register' component={RegistrationPage} />
-					<Route path='/FuelPurchaseHistory' component={FuelPurchaseHistory} />
-				</main>
-			</>
-		);
-	}
+  // 	clearInterval(this.refreshInterval);
+  // }
+
+  return (
+    <>
+      <AuthenticateRoute>
+        <Header />
+      </AuthenticateRoute>
+      <main>
+        <Switch>
+          <Route path='/' exact>
+            {authedRedirect(LandingPage)}
+          </Route>
+          <AuthenticateRoute path='/dashboard'>
+            <DashboardPage />
+          </AuthenticateRoute>
+        </Switch>
+      </main>
+    </>
+  );
 }
 
-const mapStateToProps = state => ({
-	hasAuthToken: state.authReducer.authToken !== null,
-	loggedIn: state.authReducer.user !== null,
-});
+// const mapStateToProps = state => ({
+// 	hasAuthToken: state.authReducer.authToken !== null,
+// 	loggedIn: state.authReducer.user !== null,
+// });
 
-export default withRouter(connect(mapStateToProps)(App));
+export default App;
